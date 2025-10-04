@@ -34,7 +34,7 @@ def Dy_left(N, h):
     D = ((-D).T).conjugate()
     return D
 
-#================ Matrizes de segunda ordem via aproximação central: ================================
+#================ Matrizes de primeira ordem via aproximação central: ================================
 
 def Dx_center(N, h):
     N2 = N**2
