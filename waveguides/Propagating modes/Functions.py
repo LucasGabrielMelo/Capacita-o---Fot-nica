@@ -24,6 +24,21 @@ def Vcm(V, nf = 3.5, ns = 1.5, nc = 1): # Return the number of propagating modes
             break
     return M # Return the maximum index of the propagating modes
 
+def Vcm_TM_modes(V, nf = 3.5, ns = 1.5, nc = 1):
+    d = delta(nf, ns, nc)
+    pc = (nf/nc)**2
+    arctan = np.arctan(pc * np.sqrt(d))
+    V_max = np.max(V)
+    M = 0
+    Vc = 0
+    while True:
+        Vc = (M*np.pi + arctan) / 2
+        if Vc <= V_max:
+            M += 1
+        else:
+            break
+    return M
+
 def V_TE(b, M, nf = 3.5, ns = 1.5, nc = 1):
     v = []
     d = delta(nf, ns, nc)
@@ -56,4 +71,12 @@ def b_TE_modes(v, nf = 3.5, ns = 1.5, nc = 1): # Localize the normalized propaga
     for i in range(0, M, 1):
         b_TE.append(np.interp(v, V_te[i], b))
     return np.array(b_TE)
-    
+
+def b_TM_modes(v, nf = 3.5, ns = 1.5, nc = 1):
+    M = Vcm_TM_modes(v, nf, ns, nc)
+    b = np.linspace(0, 0.99, 100)
+    V_tm = V_TM(b, M, nf, ns, nc)
+    b_TM = []
+    for i in range(0, M, 1):
+        b_TM.append(np.interp(v, V_tm[i], b))
+    return np.array(b_TM)
